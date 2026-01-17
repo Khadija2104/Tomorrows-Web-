@@ -1,0 +1,323 @@
+body {
+  overflow-x: hidden;
+}
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #000;
+  color: #fff;
+}
+html {
+  scroll-behavior: smooth;
+}
+
+ 
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+
+
+header {
+  display: flex;
+  justify-content: space-between;
+  padding: 15px 40px;
+  background: #333;
+}
+
+nav a {
+  color: #fff;
+  margin-left: 20px;
+  text-decoration: none;
+}
+
+/* HERO SECTION */
+.hero {
+  height: 60vh;
+  background-image: url('../images/image1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Hero Overlay Text */
+.hero-text {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 40px;
+  border-radius: 12px;
+  text-align: center;
+}
+
+.hero-text h1 {
+  font-size: 48px;
+  margin-bottom: 15px;
+}
+
+.hero-text p {
+  font-size: 18px;
+  margin-bottom: 25px;
+}
+
+.hero-text button {
+  padding: 12px 30px;
+  background: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+
+
+/* ABOUT SECTION */
+.about {
+  display: flex;
+  gap: 40px;
+  padding: 60px;
+  align-items: center;
+}
+.about h2
+{
+  font-size: 50px;    
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.about img {
+  width: 45%;
+  border-radius: 20px;   /* this for rounded corners */
+  object-fit: cover;
+    transition: transform 0.3s ease;
+}
+.hero-text button {
+  padding: 12px 30px;
+  background: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btn-black {
+  padding: 12px 30px;
+  background: #000000;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.btn-black:hover {
+  background: #333;
+  transform: scale(1.05);
+  transition: 0.3s ease;
+   
+}
+
+.about img {
+  transition: transform 0.3s ease;
+}
+
+.about img:hover {
+  transform: scale(1.05);
+}
+
+
+.menu {
+  padding: 60px;
+  text-align: center;
+}
+
+.menu h2 {
+  font-size: 60px;     
+  margin-bottom: 25px;
+  text-align: center;
+}
+
+.menu-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px,1fr));
+  gap: 20px;
+}
+
+.card {
+  cursor: pointer;
+}
+
+.card img {
+  width: 100%;
+  border-radius: 10px;
+  
+}
+
+.card span {
+  display: block;
+  background: #fff;
+  color: #000;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+/* CHEFS SECTION */
+.chefs {
+  padding: 70px;
+  text-align: center;
+}
+
+.chefs h2 {
+  margin-bottom: 40px;
+  font-size: 60px;
+  text-align: center;
+}
+
+
+.chef-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 30px;
+}
+
+.chef-grid img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.chef-grid img {
+  transition: transform 0.3s ease;
+}
+
+.chef-grid img:hover {
+  transform: scale(1.05);
+}
+
+/* FOOTER */
+.footer {
+  background: #444;
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 60px;
+}
+
+.footer-box {
+  width: 300px;
+  height: 60px;
+  background: #bbb;
+  margin: 20px auto;
+}
+
+.footer p {
+  margin-top: 15px;
+  font-size: 14px;
+}
+/* FOOTER MAIN */
+.footer-main {
+  background: #444;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.footer-main h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.footer-box {
+  width: 320px;
+  height: 70px;
+  background: #bdbdbd;
+  margin: 0 auto;
+}
+
+/* COPYRIGHT BAR */
+.footer-copy {
+  background: #2f2f2f;
+  text-align: center;
+  padding: 12px;
+}
+
+footer {
+  padding: 20px;
+  background: #333;
+  text-align: center;
+}
+
+
+
+
+
+@media (max-width: 1024px) {
+
+  /* HEADER */
+  .top-header {
+    padding: 15px 25px;
+  }
+
+  /* HERO IMAGE */
+  .food-hero img {
+    height: 250px;
+  }
+
+  /* GALLERY */
+  .food-gallery {
+    padding: 30px 40px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* TITLE */
+  .food-title h1 {
+    font-size: 40px;
+  }
+}
+ 
+@media (max-width: 600px) {
+
+  /* HEADER */
+  .top-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .top-header nav a {
+    margin: 0 10px;
+    font-size: 14px;
+  }
+
+  /* HERO IMAGE */
+  .food-hero img {
+    height: 180px;
+  }
+
+  /* TITLE */
+  .food-title h1 {
+    font-size: 32px;
+  }
+
+  /* GALLERY */
+  .food-gallery {
+    padding: 20px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* FOOTER */
+  .footer-main h2 {
+    font-size: 28px;
+  }
+
+  .footer-box {
+    width: 90%;
+    height: 60px;
+  }
+}
