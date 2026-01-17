@@ -1,0 +1,244 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #000;
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+/* HEADER */
+.top-header {
+  background: #444;
+  padding: 15px 40px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top-header a {
+  color: #fff;
+  text-decoration: none;
+  margin-left: 20px;
+}
+/* Container for the dropdown */
+.dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+/* Style for the 'Menu' link */
+.dropbtn {
+  color: white;
+  text-decoration: none;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+/* The hidden box that holds the links */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #444; /* Match your header color */
+  min-width: 160px;
+  box-shadow: 0px 8px 16px rgba(0,0,0,0.2);
+  z-index: 1;
+  border-radius: 4px;
+  top: 100%; /* Positions it right below the Menu text */
+}
+
+/* Individual links inside the dropdown */
+.dropdown-content a {
+  color: white;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  margin-left: 0; /* Resets your nav margin */
+  font-size: 14px;
+}
+
+/* Change color when you hover over links */
+.dropdown-content a:hover {
+  background-color: #555;
+}
+
+/* Show the menu when you hover over the 'Menu' word */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* HERO */
+.food-hero img {
+  width: 100%;
+  height: 590px;
+  object-fit: cover;
+}
+.food-hero img {
+  width: 100%;
+  height: 540px;
+  object-fit: cover;
+}
+
+/* TITLE */
+.food-title {
+  text-align: center;
+  padding: 40px 0;
+}
+
+.food-title h1 {
+  font-size: 48px;
+}
+
+/* GALLERY */
+.food-gallery {
+  padding: 40px 80px;
+}
+
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Forces exactly 3 columns */
+  gap: 20px;                             /* Space between images */
+  max-width: 1000px;                     /* Keeps the grid from getting too wide */
+  margin: 0 auto;                        /* Centers the whole grid */
+}
+
+.gallery-grid img {
+  width: 100%;
+  aspect-ratio: 1 ;                   /* Makes images perfectly square like your sample */
+  object-fit: cover;                     /* Prevents stretching */
+  border-radius: 10px;
+}
+
+.gallery-grid img:hover {
+  transform: scale(1.05);
+}
+.gallery-grid img, .food-hero img {
+  width: 100%;
+  object-fit: cover;
+  image-rendering: -webkit-optimize-contrast; /* Helps with sharpness */
+}
+
+/* FOOTER */
+.footer {
+  background: #444;
+  text-align: center;
+  padding: 40px 20px;
+  margin-top: 60px;
+}
+
+.footer-box {
+  width: 300px;
+  height: 60px;
+  background: #bbb;
+  margin: 20px auto;
+}
+
+.footer p {
+  margin-top: 15px;
+  font-size: 14px;
+}
+/* FOOTER MAIN */
+.footer-main {
+  background: #444;
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.footer-main h2 {
+  font-size: 36px;
+  margin-bottom: 20px;
+}
+
+.footer-box {
+  width: 320px;
+  height: 70px;
+  background: #bdbdbd;
+  margin: 0 auto;
+}
+
+/* COPYRIGHT BAR */
+.footer-copy {
+  background: #2f2f2f;
+  text-align: center;
+  padding: 12px;
+}
+
+.footer-copy p {
+  font-size: 14px;
+  color: #ddd;
+}
+
+@media (max-width: 1024px) {
+
+  /* HEADER */
+  .top-header {
+    padding: 15px 25px;
+  }
+
+  /* HERO IMAGE */
+  .food-hero img {
+    height: 250px;
+  }
+
+  /* GALLERY */
+  .food-gallery {
+    padding: 30px 40px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* TITLE */
+  .food-title h1 {
+    font-size: 40px;
+  }
+}
+ 
+@media (max-width: 600px) {
+
+  /* HEADER */
+  .top-header {
+    flex-direction: column;
+    gap: 10px;
+    text-align: center;
+  }
+
+  .top-header nav a {
+    margin: 0 10px;
+    font-size: 14px;
+  }
+
+  /* HERO IMAGE */
+  .food-hero img {
+    height: 180px;
+  }
+
+  /* TITLE */
+  .food-title h1 {
+    font-size: 32px;
+  }
+
+  /* GALLERY */
+  .food-gallery {
+    padding: 20px;
+  }
+
+  .gallery-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+
+  /* FOOTER */
+  .footer-main h2 {
+    font-size: 28px;
+  }
+
+  .footer-box {
+    width: 90%;
+    height: 60px;
+  }
+}
