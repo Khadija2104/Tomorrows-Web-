@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Japanese Food | Food Lovers</title>
+  <link rel="stylesheet" href="../css/kstylesheet.css">
+</head>
+<body>
+<header class="top-header">
+  <div class="logo">Food Lovers</div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <div class="dropdown">
+      <a href="#" class="dropbtn">Menu ▾</a>
+      <div class="dropdown-content">
+        <a href="korean.html">Korean</a>
+        <a href="japanese.html">Japanese</a>
+        <a href="thai.html">Thai</a>
+        <a href="mexican.html">Mexican</a>
+        <a href="sweets.html">Sweets</a>
+        <a href="drinks.html">Drinks</a>
+      </div>
+    </div>
+  </nav>
+</header>
+<section class="food-hero">
+  <img src="../images/japanese1.jpg" alt="Japanese food">
+</section>
+<section class="food-title">
+  <h1>Japanese food</h1>
+</section>
+<section class="food-gallery">
+  <div id="japaneseImages" class="gallery-grid">
+    <p style="text-align:center; padding:40px; color:#fff; grid-column: 1/-1;">Loading Japanese dishes...</p>
+  </div>
+</section>
+<footer class="footer-main">
+  <h2>Food Lovers</h2>
+  <div class="footer-box"></div>
+</footer>
+<div class="footer-copy">
+  <p>© 2026 Food Lovers. All Rights Reserved.</p>
+</div>
+<script>const API_BASE_URL = 'http://localhost:8000/api';</script>
+<script>
+async function loadFoodImages(category) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/food-items/category/${category}`, {
+      headers: { 'Accept': 'application/json' }
+    });
+    if (!response.ok) throw new Error('Failed to load food items');
+    const result = await response.json();
+    if (result.success && result.data && result.data.length > 0) {
+      const container = document.getElementById('japaneseImages');
+      container.innerHTML = '';
+      result.data.forEach(item => {
+        const img = document.createElement('img');
+        img.src = item.image_url || `https://via.placeholder.com/300x300?text=${encodeURIComponent(item.name)}`;
+        img.alt = item.name;
+        img.title = `${item.name} - $${parseFloat(item.price).toFixed(2)}`;
+        img.onerror = function() { this.src = `https://via.placeholder.com/300x300/555/fff?text=${encodeURIComponent(item.name)}`; };
+        container.appendChild(img);
+      });
+    } else {
+      document.getElementById('japaneseImages').innerHTML = '<p style="text-align:center; padding:40px; color:#fff; grid-column: 1/-1;">No items found.</p>';
+    }
+  } catch (error) {
+    document.getElementById('japaneseImages').innerHTML = `<p style="text-align:center; padding:40px; color:#fff; grid-column: 1/-1;">Error: ${error.message}</p>`;
+  }
+}
+window.addEventListener('DOMContentLoaded', function() { loadFoodImages('japanese'); });
+</script>
+</body>
+</html>
