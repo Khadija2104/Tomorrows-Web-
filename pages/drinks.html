@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Drinks | Food Lovers</title>
+  <link rel="stylesheet" href="../css/kstylesheet.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="top-header">
+  <div class="logo">Food Lovers</div>
+  <nav>
+    <a href="../index.html">Home</a>
+    <div class="dropdown">
+      <a href="#" class="dropbtn">Menu ▾</a>
+      <div class="dropdown-content">
+        <a href="korean.html">Korean</a>
+        <a href="japanese.html">Japanese</a>
+        <a href="thai.html">Thai</a>
+        <a href="mexican.html">Mexican</a>
+        <a href="sweets.html">Sweets</a>
+        <a href="drinks.html">Drinks</a>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO IMAGE -->
+<section class="food-hero">
+  <img src="../images/drink1.jpg" alt="Drinks">
+</section>
+
+<!-- TITLE -->
+<section class="food-title">
+  <h1>Drinks</h1>
+</section>
+
+<!-- FOOD GRID -->
+<section class="food-gallery">
+  <div id="drinksImages" class="gallery-grid">
+    <!-- Loading state -->
+    <p style="text-align:center; padding:40px; color:#fff; grid-column: 1/-1;">Loading refreshing drinks...</p>
+  </div>
+</section>
+
+<!-- FOOTER MAIN -->
+<footer class="footer-main">
+  <h2>Food Lovers</h2>
+  <div class="footer-box"></div>
+</footer>
+
+<!-- COPYRIGHT BAR -->
+<div class="footer-copy">
+  <p>© 2026 Food Lovers. All Rights Reserved.</p>
+</div>
+
+<!-- API Configuration -->
+<script>
+  const API_BASE_URL = 'http://localhost:8000/api';
+</script>
+
+<!-- API Integration Script -->
+<script>
+// Load food items from API
+async function loadFoodImages(category) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/food-items/category/${category}`, {
+      headers: {
+        'Accept': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to load food items');
+    }
+
+    const result = await response.json();
+    
+    if (result.success && result.data && result.data.length > 0) {
+      displayFoodItems(result.data);
+    } else {
+      showEmptyState();
+    }
+  } catch (error) {
+    console.error('Error loading food items:', error);
+    showErrorState(error.message);
+  }
+}
+
+// Display food items in gallery
+function displayFoodItems(items) {
+  const container = document.getElementById('drinksImages');
+  
+  if (!container) {
+    console.error('Container not found');
+    return;
+  }
+
+  // Clear loading state
+  container.innerHTML = '';
+  
+  // Add items from API
+  items.forEach(item => {
+    const img = document.createElement('img');
+    img.src = item.image_url || `https://via.placeholder.com/300x300/FF6B6B/ffffff?text=${encodeURIComponent(item.name)}`;
+    img.alt = item.name;
+    img.title = `${item.name} - $${parseFloat(item.price).toFixed(2)}`;
+    
+    // Fallback if image fails to load
+    img.onerror = function() {
+      this.src = `https://via.placeholder.com/300x300/4ECDC4/ffffff?text=${encodeURIComponent(item.name)}`;
+    };
+    
+    container.appendChild(img);
+  });
+}
+
+// Show empty state
+function showEmptyState() {
+  const container = document.getElementById('drinksImages');
+  if (container) {
+    container.innerHTML = '<p style="text-align:center; padding:40px; color:#fff; grid-column: 1/-1;">No drinks found. Check back soon!</p>';
+  }
+}
+
+// Show error state
+function showErrorState(message) {
+  const container = document.getElementById('drinksImages');
+  if (container) {
+    container.innerHTML = `<p style="text-align:center; padding:40px; color:#fff; grid-column: 1/-1;">Error loading drinks: ${message}</p>`;
+  }
+}
+
+// Load drinks when page loads
+window.addEventListener('DOMContentLoaded', function() {
+  loadFoodImages('drinks');
+});
+</script>
+
+</body>
+</html>
