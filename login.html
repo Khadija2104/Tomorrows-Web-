@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Login | Food Lovers</title>
+  <link rel="stylesheet" href="css/auth.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="auth-header">
+  <div class="logo">Food Lovers</div>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="signup.html">Sign up</a>
+  </nav>
+</header>
+
+<!-- LOGIN CARD -->
+<div class="auth-container">
+  <div class="auth-card">
+    <h2>Login</h2>
+
+    <input type="email" id="email" placeholder="Enter your Email">
+    <input type="password" id="password" placeholder="Enter your password">
+
+    <button onclick="login()">Login</button>
+    
+    <p id="errorMsg" style="color: #e74c3c; margin-top: 15px; font-size: 14px; display: none;"></p>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+</body>
+</html>
