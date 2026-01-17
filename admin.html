@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel - Food Lovers</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f5f5;
+        }
+
+        /* Header */
+        .admin-header {
+            background: #2c3e50;
+            color: white;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .admin-header h1 {
+            font-size: 24px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logout-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .logout-btn:hover {
+            background: #c0392b;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        /* Tabs */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .tab-btn {
+            padding: 12px 25px;
+            border: none;
+            background: #ecf0f1;
+            color: #2c3e50;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .tab-btn.active {
+            background: #3498db;
+            color: white;
+        }
+
+        .tab-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Action Bar */
+        .action-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .action-bar h2 {
+            color: #2c3e50;
+        }
+
+        .add-btn {
+            background: #27ae60;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        .add-btn:hover {
+            background: #229954;
+        }
+
+        /* Filter Section */
+        .filter-section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .filter-group select {
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        /* Table */
+        .table-container {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        thead {
+            background: #34495e;
+            color: white;
+        }
+
+        thead th {
+            padding: 15px;
+            text-align: left;
+            font-weight: 500;
+        }
+
+        tbody tr {
+            border-bottom: 1px solid #ecf0f1;
+        }
+
+        tbody tr:hover {
+            background: #f8f9fa;
+        }
+
+        tbody td {
+            padding: 15px;
+        }
+
+        .food-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #3498db;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 600;
+        }
+
+        .category-badge, .role-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-korean { background: #ffe5e5; color: #c0392b; }
+        .badge-japanese { background: #ffe5f1; color: #e91e63; }
+        .badge-thai { background: #fff3e0; color: #f57c00; }
+        .badge-mexican { background: #e8f5e9; color: #2e7d32; }
+        .badge-sweets { background: #f3e5f5; color: #7b1fa2; }
+        .badge-drinks { background: #e3f2fd; color: #1976d2; }
+
+        .role-admin { background: #e74c3c; color: white; }
+        .role-user { background: #95a5a6; color: white; }
+
+        .status-badge {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-inactive {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .price {
+            font-weight: 600;
+            color: #27ae60;
+        }
+
+        /* Action Buttons */
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-edit, .btn-delete, .btn-role {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .btn-edit {
+            background: #3498db;
+            color: white;
+        }
+
+        .btn-edit:hover {
+            background: #2980b9;
+        }
+
+        .btn-delete {
+            background: #e74c3c;
+            color: white;
+        }
+
+        .btn-delete:hover {
+            background: #c0392b;
+        }
+
+        .btn-role {
+            background: #f39c12;
+            color: white;
+        }
+
+        .btn-role:hover {
+            background: #e67e22;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .modal.active {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h2 {
+            color: #2c3e50;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #7f8c8d;
+        }
+
+        .close-btn:hover {
+            color: #2c3e50;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #2c3e50;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+            margin-top: 25px;
+        }
+
+        .btn-submit, .btn-cancel {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 15px;
+            font-weight: 500;
+        }
+
+        .btn-submit {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-submit:hover {
+            background: #229954;
+        }
+
+        .btn-cancel {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-cancel:hover {
+            background: #7f8c8d;
+        }
+
+        /* Loading */
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #7f8c8d;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #7f8c8d;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="admin-header">
+        <h1>🍴 Food Lovers Admin Panel</h1>
+        <div class="user-info">
+            <span id="adminName">Admin User</span>
+            <button class="logout-btn" onclick="logout()">Logout</button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <div class="container">
+        <!-- Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="switchTab('food')">📦 Food Items</button>
+            <button class="tab-btn" onclick="switchTab('users')">👥 Users</button>
+        </div>
+
+        <!-- FOOD ITEMS TAB -->
+        <div id="foodTab" class="tab-content active">
+            <!-- Action Bar -->
+            <div class="action-bar">
+                <h2>Manage Food Items</h2>
+                <button class="add-btn" onclick="openFoodModal()">+ Add New Item</button>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Filter by Category:</label>
+                    <select id="categoryFilter" onchange="filterByCategory()">
+                        <option value="">All Categories</option>
+                        <option value="korean">Korean</option>
+                        <option value="japanese">Japanese</option>
+                        <option value="thai">Thai</option>
+                        <option value="mexican">Mexican</option>
+                        <option value="sweets">Sweets</option>
+                        <option value="drinks">Drinks</option>
+                    </select>
+
+                    <label>Status:</label>
+                    <select id="statusFilter" onchange="filterByCategory()">
+                        <option value="">All</option>
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Category</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="foodTableBody">
+                        <tr>
+                            <td colspan="6" class="loading">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- USERS TAB -->
+        <div id="usersTab" class="tab-content">
+            <!-- Action Bar -->
+            <div class="action-bar">
+                <h2>Manage Users</h2>
+                <div style="color: #7f8c8d; font-size: 14px;">Total Users: <span id="totalUsers">0</span></div>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="filter-section">
+                <div class="filter-group">
+                    <label>Filter by Role:</label>
+                    <select id="roleFilter" onchange="filterUsers()">
+                        <option value="">All Roles</option>
+                        <option value="admin">Admin</option>
+                        <option value="user">User</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Avatar</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Joined</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="usersTableBody">
+                        <tr>
+                            <td colspan="6" class="loading">Loading...</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Food Item Modal -->
+    <div id="foodModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="foodModalTitle">Add New Food Item</h2>
+                <button class="close-btn" onclick="closeFoodModal()">&times;</button>
+            </div>
+
+            <form id="foodForm">
+                <input type="hidden" id="itemId">
+
+                <div class="form-group">
+                    <label>Name *</label>
+                    <input type="text" id="itemName" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Category *</label>
+                    <select id="itemCategory" required>
+                        <option value="">Select Category</option>
+                        <option value="korean">Korean</option>
+                        <option value="japanese">Japanese</option>
+                        <option value="thai">Thai</option>
+                        <option value="mexican">Mexican</option>
+                        <option value="sweets">Sweets</option>
+                        <option value="drinks">Drinks</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="itemDescription"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>Price *</label>
+                    <input type="number" id="itemPrice" step="0.01" min="0" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Image URL</label>
+                    <input type="url" id="itemImage">
+                </div>
+
+                <div class="form-group">
+                    <label>Ingredients (comma-separated)</label>
+                    <input type="text" id="itemIngredients" placeholder="rice, beef, vegetables">
+                </div>
+
+                <div class="form-group">
+                    <label>Allergens (comma-separated)</label>
+                    <input type="text" id="itemAllergens" placeholder="eggs, dairy, nuts">
+                </div>
+
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="itemActive" checked>
+                        Active
+                    </label>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeFoodModal()">Cancel</button>
+                    <button type="submit" class="btn-submit">Save</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE_URL = 'http://localhost:8000/api';
+        let allItems = [];
+        let allUsers = [];
+        let token = localStorage.getItem('auth_token');
+
+        // Load data on page load
+        window.onload = async function() {
+            await loadUserInfo();
+            await loadFoodItems();
+            await loadUsers();
+        };
+
+        // Switch tabs
+        function switchTab(tab) {
+            // Update tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            // Update tab content
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            if (tab === 'food') {
+                document.getElementById('foodTab').classList.add('active');
+            } else {
+                document.getElementById('usersTab').classList.add('active');
+            }
+        }
+
+        // Load user info
+        async function loadUserInfo() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/auth/me`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const user = await response.json();
+                    document.getElementById('adminName').textContent = user.name;
+                }
+            } catch (error) {
+                console.error('Error loading user info:', error);
+            }
+        }
+
+        // =====================================
+        // FOOD ITEMS FUNCTIONS
+        // =====================================
+
+        async function loadFoodItems() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/food-items`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+                allItems = result.data;
+                
+                // Debug: Check what ID field the API is using
+                if (allItems.length > 0) {
+                    console.log('Sample item from API:', allItems[0]);
+                    console.log('ID field check - id:', allItems[0].id, '_id:', allItems[0]._id);
+                }
+                
+                displayFoodItems(allItems);
+            } catch (error) {
+                console.error('Error loading food items:', error);
+                document.getElementById('foodTableBody').innerHTML = 
+                    '<tr><td colspan="6" class="empty-state">Failed to load items</td></tr>';
+            }
+        }
+
+        function displayFoodItems(items) {
+            const tbody = document.getElementById('foodTableBody');
+
+            if (items.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty-state">
+                            <h3>No items found</h3>
+                            <p>Click "Add New Item" to create your first food item</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = items.map((item, index) => {
+                // Use id or _id depending on what your API returns
+                const itemId = item.id || item._id;
+                
+                return `
+                <tr>
+                    <td>
+                        <img src="${item.image_url || 'https://via.placeholder.com/60'}" 
+                             alt="${item.name}" class="food-image">
+                    </td>
+                    <td><strong>${item.name}</strong></td>
+                    <td>
+                        <span class="category-badge badge-${item.category}">
+                            ${item.category.toUpperCase()}
+                        </span>
+                    </td>
+                    <td class="price">$${parseFloat(item.price).toFixed(2)}</td>
+                    <td>
+                        <span class="status-badge ${item.is_active ? 'status-active' : 'status-inactive'}">
+                            ${item.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-edit" onclick="editFoodItemById(${index})">Edit</button>
+                            <button class="btn-delete" onclick="deleteFoodItem('${itemId}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function editFoodItemById(index) {
+            const item = allItems[index];
+            console.log('Editing item:', item); // Debug log
+            openFoodModal(item);
+        }
+
+        function filterByCategory() {
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const statusFilter = document.getElementById('statusFilter').value;
+
+            let filtered = allItems;
+
+            if (categoryFilter) {
+                filtered = filtered.filter(item => item.category === categoryFilter);
+            }
+
+            if (statusFilter === 'active') {
+                filtered = filtered.filter(item => item.is_active === true);
+            } else if (statusFilter === 'inactive') {
+                filtered = filtered.filter(item => item.is_active === false);
+            }
+
+            displayFoodItems(filtered);
+        }
+
+        function openFoodModal(item = null) {
+            document.getElementById('foodModal').classList.add('active');
+            document.getElementById('foodModalTitle').textContent = item ? 'Edit Food Item' : 'Add New Food Item';
+
+            if (item) {
+                // Handle both id and _id field names
+                const itemId = item.id || item._id;
+                console.log('Opening modal for item ID:', itemId); // Debug log
+                
+                document.getElementById('itemId').value = itemId || '';
+                document.getElementById('itemName').value = item.name;
+                document.getElementById('itemCategory').value = item.category;
+                document.getElementById('itemDescription').value = item.description || '';
+                document.getElementById('itemPrice').value = item.price;
+                document.getElementById('itemImage').value = item.image_url || '';
+                document.getElementById('itemIngredients').value = item.ingredients?.join(', ') || '';
+                document.getElementById('itemAllergens').value = item.allergens?.join(', ') || '';
+                document.getElementById('itemActive').checked = item.is_active;
+            } else {
+                document.getElementById('foodForm').reset();
+                document.getElementById('itemId').value = '';
+            }
+        }
+
+        function closeFoodModal() {
+            document.getElementById('foodModal').classList.remove('active');
+            document.getElementById('foodForm').reset();
+        }
+
+        function editFoodItem(item) {
+            openFoodModal(item);
+        }
+
+        document.getElementById('foodForm').onsubmit = async function(e) {
+            e.preventDefault();
+
+            const itemId = document.getElementById('itemId').value;
+            
+            // Validate that we have an ID for updates
+            if (itemId && itemId === 'undefined') {
+                alert('Error: Invalid item ID');
+                console.error('Item ID is undefined');
+                return;
+            }
+
+            const formData = {
+                name: document.getElementById('itemName').value,
+                category: document.getElementById('itemCategory').value,
+                description: document.getElementById('itemDescription').value,
+                price: parseFloat(document.getElementById('itemPrice').value),
+                image_url: document.getElementById('itemImage').value,
+                ingredients: document.getElementById('itemIngredients').value
+                    .split(',').map(i => i.trim()).filter(i => i),
+                allergens: document.getElementById('itemAllergens').value
+                    .split(',').map(i => i.trim()).filter(i => i),
+                is_active: document.getElementById('itemActive').checked
+            };
+
+            try {
+                const url = itemId 
+                    ? `${API_BASE_URL}/admin/food-items/${itemId}`
+                    : `${API_BASE_URL}/admin/food-items`;
+
+                console.log('Submitting to:', url); // Debug log
+                console.log('Method:', itemId ? 'PUT' : 'POST'); // Debug log
+
+                const response = await fetch(url, {
+                    method: itemId ? 'PUT' : 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert(result.message);
+                    closeFoodModal();
+                    await loadFoodItems();
+                } else {
+                    alert('Error: ' + JSON.stringify(result.errors || result.message));
+                }
+            } catch (error) {
+                console.error('Error saving item:', error);
+                alert('Failed to save item');
+            }
+        };
+
+        async function deleteFoodItem(id) {
+            if (!id || id === 'undefined') {
+                alert('Error: Invalid item ID');
+                console.error('Cannot delete item with undefined ID');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to delete this item?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/food-items/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('Item deleted successfully');
+                    await loadFoodItems();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error deleting item:', error);
+                alert('Failed to delete item');
+            }
+        }
+
+        // =====================================
+        // USERS FUNCTIONS
+        // =====================================
+
+        async function loadUsers() {
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/users`, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+                allUsers = result.data;
+                displayUsers(allUsers);
+                document.getElementById('totalUsers').textContent = allUsers.length;
+            } catch (error) {
+                console.error('Error loading users:', error);
+                document.getElementById('usersTableBody').innerHTML = 
+                    '<tr><td colspan="6" class="empty-state">Failed to load users</td></tr>';
+            }
+        }
+
+        function displayUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+
+            if (users.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="empty-state">
+                            <h3>No users found</h3>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = users.map(user => {
+                // Use id or _id depending on what your API returns
+                const userId = user.id || user._id;
+                
+                return `
+                <tr>
+                    <td>
+                        <div class="user-avatar">
+                            ${user.name.charAt(0).toUpperCase()}
+                        </div>
+                    </td>
+                    <td><strong>${user.name}</strong></td>
+                    <td>${user.email}</td>
+                    <td>
+                        <span class="role-badge role-${user.role}">
+                            ${user.role.toUpperCase()}
+                        </span>
+                    </td>
+                    <td>${new Date(user.created_at).toLocaleDateString()}</td>
+                    <td>
+                        <div class="action-buttons">
+                            <button class="btn-role" onclick="toggleUserRole('${userId}', '${user.role}')">
+                                ${user.role === 'admin' ? 'Make User' : 'Make Admin'}
+                            </button>
+                            <button class="btn-delete" onclick="deleteUser('${userId}')">Delete</button>
+                        </div>
+                    </td>
+                </tr>
+                `;
+            }).join('');
+        }
+
+        function filterUsers() {
+            const roleFilter = document.getElementById('roleFilter').value;
+
+            let filtered = allUsers;
+
+            if (roleFilter) {
+                filtered = filtered.filter(user => user.role === roleFilter);
+            }
+
+            displayUsers(filtered);
+        }
+
+        async function toggleUserRole(id, currentRole) {
+            const newRole = currentRole === 'admin' ? 'user' : 'admin';
+            
+            if (!confirm(`Change this user's role to ${newRole}?`)) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/users/${id}/role`, {
+                    method: 'PUT',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({ role: newRole })
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('User role updated successfully');
+                    await loadUsers();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error updating user role:', error);
+                alert('Failed to update user role');
+            }
+        }
+
+        async function deleteUser(id) {
+            if (!confirm('Are you sure you want to delete this user?')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_BASE_URL}/admin/users/${id}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    alert('User deleted successfully');
+                    await loadUsers();
+                } else {
+                    alert('Error: ' + result.message);
+                }
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                alert('Failed to delete user');
+            }
+        }
+
+        // Logout
+        async function logout() {
+            try {
+                await fetch(`${API_BASE_URL}/auth/logout`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Accept': 'application/json'
+                    }
+                });
+            } catch (error) {
+                console.error('Logout error:', error);
+            }
+
+            localStorage.removeItem('auth_token');
+            window.location.href = '/login.html';
+        }
+    </script>
+</body>
+</html>
